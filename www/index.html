@@ -15,6 +15,11 @@
 
 <body>
 
+
+<!-- صفحه اصلی مشتریان -->
+
+<div id="homePage" class="page">
+
 <div class="container">
 
 <h1>🏢 انتخاب نیک</h1>
@@ -23,12 +28,14 @@
 سیستم مدیریت مشتریان
 </p>
 
+
 <div class="searchBox">
 
 <input
 type="text"
 id="searchBox"
 placeholder="نام مشتری، آدرس یا شماره موبایل">
+
 
 <button id="searchBtn">
 
@@ -38,73 +45,185 @@ placeholder="نام مشتری، آدرس یا شماره موبایل">
 
 </div>
 
+
 <div id="result">
+<!-- صفحه تلفن -->
+
+<div id="phonePage" class="page hidden">
+
+<div class="container">
+
+<h1>📞 تلفن</h1>
+
+
+<input 
+type="text"
+id="dialNumber"
+class="dialDisplay"
+placeholder="شماره را وارد کنید"
+readonly>
+
+
+<div class="dialpad">
+
+<button class="dialKey">1</button>
+<button class="dialKey">2</button>
+<button class="dialKey">3</button>
+
+<button class="dialKey">4</button>
+<button class="dialKey">5</button>
+<button class="dialKey">6</button>
+
+<button class="dialKey">7</button>
+<button class="dialKey">8</button>
+<button class="dialKey">9</button>
+
+<button class="dialKey">*</button>
+<button class="dialKey">0</button>
+<button class="dialKey">#</button>
+
+</div>
+
+
+<div class="phoneButtons">
+
+<button id="clearBtn">
+
+⌫ حذف
+
+</button>
+
+
+<button id="callBtn">
+
+📞 تماس
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+<!-- صفحه مخاطبین -->
+
+<div id="contactsPage" class="page hidden">
+
+<div class="container">
+
+<h1>👥 مخاطبین</h1>
+
+
+<div id="contactsList">
 
 <div class="welcome">
 
-<h2>خوش آمدید</h2>
+<h2>مخاطبین</h2>
 
 <p>
-
-نام مشتری، آدرس یا شماره موبایل را وارد کنید.
-
+در نسخه بعدی، مخاطبین گوشی اضافه می‌شود.
 </p>
 
 </div>
 
 </div>
 
-</div>
-<div id="phonePage" class="hidden">
-
-<h2>📞 تلفن</h2>
-
-<input type="text" id="dialNumber" placeholder="شماره را وارد کنید">
-
-<div class="dialpad">
-
-<button>1</button>
-<button>2</button>
-<button>3</button>
-
-<button>4</button>
-<button>5</button>
-<button>6</button>
-
-<button>7</button>
-<button>8</button>
-<button>9</button>
-
-<button>*</button>
-<button>0</button>
-<button>#</button>
-
-</div>
-
-<div class="phoneButtons">
-
-<button id="callBtn">📞 تماس</button>
-
-<button id="clearBtn">⌫ حذف</button>
 
 </div>
 
 </div>
+
+
+
+<!-- صفحه پیامک -->
+
+<div id="smsPage" class="page hidden">
+
+<div class="container">
+
+<h1>💬 پیامک</h1>
+
+
+<div class="welcome">
+
+<h2>ارسال پیام</h2>
+
+<p>
+در نسخه بعدی، ارسال پیامک اضافه می‌شود.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+<!-- نوار پایین برنامه -->
 
 <div class="bottomNav">
 
-<button id="homeTab">🏠</button>
 
-<button id="phoneTab">📞</button>
+<button id="homeTab">
 
-<button id="smsTab">💬</button>
+🏠
+<br>
+خانه
 
-<button id="contactsTab">👥</button>
+</button>
+
+
+<button id="phoneTab">
+
+📞
+<br>
+تلفن
+
+</button>
+
+
+<button id="contactsTab">
+
+👥
+<br>
+مخاطبین
+
+</button>
+
+
+<button id="smsTab">
+
+💬
+<br>
+پیامک
+
+</button>
+
 
 </div>
 
+
+
 <script src="script.js"></script>
+
 
 </body>
 
 </html>
+
+<div class="welcome">
+
+<h2>خوش آمدید</h2>
+
+<p>
+نام مشتری، آدرس یا شماره موبایل را وارد کنید.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>

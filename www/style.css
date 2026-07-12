@@ -2,18 +2,37 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:tahoma;
+    font-family:tahoma, Arial, sans-serif;
 }
+
 
 body{
 
     background:#f2f4f8;
 
+    padding-bottom:80px;
+
 }
+
+
+.page{
+
+    width:100%;
+
+}
+
+
+.hidden{
+
+    display:none;
+
+}
+
 
 .container{
 
     width:95%;
+
     max-width:800px;
 
     margin:20px auto;
@@ -28,6 +47,7 @@ body{
 
 }
 
+
 h1{
 
     text-align:center;
@@ -37,6 +57,7 @@ h1{
     margin-bottom:10px;
 
 }
+
 
 .subtitle{
 
@@ -48,6 +69,7 @@ h1{
 
 }
 
+
 .searchBox{
 
     display:flex;
@@ -57,6 +79,7 @@ h1{
     margin-bottom:20px;
 
 }
+
 
 #searchBox{
 
@@ -71,6 +94,7 @@ h1{
     font-size:18px;
 
 }
+
 
 #searchBtn{
 
@@ -90,17 +114,20 @@ h1{
 
 }
 
+
 #searchBtn:hover{
 
     background:#086836;
 
 }
 
+
 #result{
 
     margin-top:15px;
 
 }
+
 
 .card{
 
@@ -116,6 +143,7 @@ h1{
 
 }
 
+
 .card h3{
 
     color:#0B7D43;
@@ -124,25 +152,11 @@ h1{
 
 }
 
+
 .info{
-
-    margin:6px 0;
-
-    font-size:16px;
-
-}
-
-.welcome{
-
-    text-align:center;
-
-    color:#777;
-
-    padding:40px 10px;
-
-}
-
-button.action{
+button.action,
+#callBtn,
+#clearBtn{
 
     margin-top:15px;
 
@@ -156,4 +170,254 @@ button.action{
 
     background:#0B7D43;
 
-    color
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+
+button.action:hover,
+#callBtn:hover,
+#clearBtn:hover{
+
+    background:#086836;
+
+}
+
+
+/* شماره گیر */
+
+.dialDisplay{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+    font-size:22px;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    direction:ltr;
+
+}
+
+
+
+.dialpad{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.dialKey{
+
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#eeeeee;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+}
+
+
+
+.dialKey:hover{
+
+    background:#dddddd;
+
+}
+
+
+
+.phoneButtons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+.phoneButtons button{
+
+    flex:1;
+
+}
+
+
+
+/* نوار پایین */
+
+.bottomNav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:70px;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    box-shadow:0 -2px 10px rgba(0,0,0,.15);
+
+    z-index:100;
+
+}
+
+
+
+.bottomNav button{
+
+    border:none;
+
+    background:none;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    color:#333;
+
+}
+
+
+.bottomNav button:hover{
+
+    color:#0B7D43;
+
+}
+@media(max-width:600px){
+
+    .container{
+
+        width:95%;
+
+        margin:10px auto;
+
+        padding:15px;
+
+    }
+
+
+    h1{
+
+        font-size:24px;
+
+    }
+
+
+    .searchBox{
+
+        flex-direction:column;
+
+    }
+
+
+    #searchBtn{
+
+        width:100%;
+
+        padding:14px;
+
+    }
+
+
+    #searchBox{
+
+        font-size:16px;
+
+    }
+
+
+    .dialKey{
+
+        height:55px;
+
+        font-size:22px;
+
+    }
+
+
+    .bottomNav{
+
+        height:65px;
+
+    }
+
+}
+
+
+
+/* حالت اطلاعات تلفن */
+
+#contactsList .welcome,
+#smsPage .welcome{
+
+    padding:50px 10px;
+
+}
+
+
+
+/* دکمه های عمومی */
+
+button{
+
+    font-family:tahoma;
+
+}
+
+
+
+/* جلوگیری از انتخاب نا
+
+
+    margin:6px 0;
+
+    font-size:16px;
+
+}
+
+
+.welcome{
+
+    text-align:center;
+
+    color:#777;
+
+    padding:40px 10px;
+
+}

@@ -6,175 +6,150 @@
 let database = [];
 let searchResult = [];
 
-
 const monthOrder = {
 
-    "فروردین":1,
-    "اردیبهشت":2,
-    "خرداد":3,
-    "تیر":4,
-    "مرداد":5,
-    "شهریور":6,
-    "مهر":7,
-    "آبان":8,
-    "آذر":9,
-    "دی":10,
-    "بهمن":11,
-    "اسفند":12
+    "فروردین":1,
+    "اردیبهشت":2,
+    "خرداد":3,
+    "تیر":4,
+    "مرداد":5,
+    "شهریور":6,
+    "مهر":7,
+    "آبان":8,
+    "آذر":9,
+    "دی":10,
+    "بهمن":11,
+    "اسفند":12
 
 };
-
 
 
 window.onload = function(){
 
+    loadData();
 
-    loadData();
+    let searchBtn =
+    document.getElementById("searchBtn");
 
+    if(searchBtn){
 
-    let searchBtn =
-    document.getElementById("searchBtn");
+        searchBtn.onclick = searchCustomer;
 
-
-    if(searchBtn){
-
-        searchBtn.onclick = searchCustomer;
-
-    }
+    }
 
 
-
-    let searchBox =
-    document.getElementById("searchBox");
-
-
-    if(searchBox){
-
-        searchBox.addEventListener("keydown",function(e){
-
-            if(e.key==="Enter"){
-
-                searchCustomer();
-
-            }
-
-        });
-
-    }
+    let searchBox =
+    document.getElementById("searchBox");
 
 
+    if(searchBox){
 
-    setupPhone();
+        searchBox.addEventListener("keydown",function(e){
 
-    setupNavigation();
+            if(e.key==="Enter"){
 
+                searchCustomer();
+
+            }
+
+        });
+
+    }
+
+
+    setupPhone();
+
+    setupNavigation();
 
 };
 
 
 
-
-
 // ======================================
-// دریافت اطلاعات مشتریان
+// خواندن اطلاعات مشتریان
 // ======================================
-
 
 async function loadData(){
 
+    try{
 
-    try{
-
-
-        let response =
-        await fetch("data.json");
+        let response =
+        await fetch("data.json");
 
 
-        database =
-        await response.json();
+        database =
+        await response.json();
 
 
 
-        database.sort(function(a,b){
+        database.sort(function(a,b){
+
+            let ma =
+            monthOrder[a["ماه"]] || 0;
 
 
-            let ma =
-            monthOrder[a["ماه"]] || 0;
-
-
-            let mb =
-            monthOrder[b["ماه"]] || 0;
-
-
-
-            if(ma !== mb){
-
-                return mb - ma;
-
-            }
-
-
-            return Number(b["تاریخ"]) -
-            Number(a["تاریخ"]);
-
-
-        });
+            let mb =
+            monthOrder[b["ماه"]] || 0;
 
 
 
-        let result =
-        document.getElementById("result");
+            if(ma !== mb){
+
+                return mb - ma;
+
+            }
+
+
+            return Number(b["تاریخ"]) -
+            Number(a["تاریخ"]);
+
+
+        });
 
 
 
-        if(result){
+        let result =
+        document.getElementById("result");
 
 
-            result.innerHTML = `
+        if(result){
 
-            <div class="welcome">
+            result.innerHTML = `
 
-            <h2>
-            اطلاعات آماده است
-            </h2>
+            <div class="welcome">
 
-            <p>
-            ${database.length}
-            رکورد بارگذاری شد.
-            </p>
+            <h2>اطلاعات آماده است</h2>
 
-            </div>
+            <p>
+            ${database.length}
+            رکورد بارگذاری شد.
+            </p>
 
-            `;
+            </div>
 
+            `;
 
-        }
-
+        }
 
 
-    }
-    catch(error){
+    }catch(error){
 
 
-        console.log(error);
+        console.log(error);
 
 
-        let result =
-        document.getElementById("result");
+        let result =
+        document.getElementById("result");
 
 
-        if(result){
+        if(result){
 
+            result.innerHTML =
+            "<h2 style='color:red'>خطا در خواندن اطلاعات</h2>";
 
-            result.innerHTML =
-            "<h2 style='color:red'>خطا در خواندن اطلاعات</h2>";
+        }
 
-
-        }
-
-
-    }
-
+    }
 
 }// ======================================
 // جستجوی مشتری
@@ -183,68 +158,59 @@ async function loadData(){
 function searchCustomer(){
 
 
-    let text =
-    document.getElementById("searchBox")
-    .value
-    .trim()
-    .toLowerCase();
+    let text =
+    document.getElementById("searchBox")
+    .value
+    .trim()
+    .toLowerCase();
 
 
 
-    if(text===""){
+    if(text===""){
 
+        alert("نام، آدرس یا شماره موبایل را وارد کنید.");
 
-        alert("نام، آدرس یا شماره موبایل را وارد کنید.");
+        return;
 
-        return;
-
-    }
-
-
-
-
-    searchResult =
-    database.filter(function(item){
-
-
-        let search =
-        (item["جستجو"] || "")
-        .toString()
-        .toLowerCase();
+    }
 
 
 
-        return search.includes(text);
+    searchResult =
+    database.filter(function(item){
+
+
+        let search =
+        (item["جستجو"] || "")
+        .toString()
+        .toLowerCase();
 
 
 
-    });
+        return search.includes(text);
+
+
+    });
 
 
 
+    if(searchResult.length===0){
 
 
-    if(searchResult.length===0){
+        document.getElementById("result").innerHTML =
+
+        "<h2>❌ مشتری پیدا نشد</h2>";
 
 
-        document.getElementById("result").innerHTML =
+        return;
 
-        "<h2>❌ مشتری پیدا نشد</h2>";
-
-
-        return;
+    }
 
 
-    }
-
-
-
-    showSearchList();
+    showSearchList();
 
 
 }
-
-
 
 
 
@@ -254,117 +220,115 @@ function searchCustomer(){
 // نمایش نتیجه جستجو
 // ======================================
 
-
 function showSearchList(){
 
 
-    let unique = {};
+    let unique = {};
 
-    let customers = [];
+    let customers = [];
 
 
 
-    searchResult.forEach(function(item){
+    searchResult.forEach(function(item){
 
 
-        let name =
-        (item["مشتری"] || "").trim();
+        let name =
+        (item["مشتری"] || "").trim();
 
 
-        let address =
-        (item["آدرس"] || "").trim();
 
+        let address =
+        (item["آدرس"] || "").trim();
 
 
-        let key =
-        name + "|" + address;
 
+        let key =
+        name + "|" + address;
 
 
-        if(!unique[key]){
 
+        if(!unique[key]){
 
-            unique[key] = true;
 
+            unique[key] = true;
 
-            customers.push({
 
-                name:name,
 
-                address:address
+            customers.push({
 
-            });
+                name:name,
 
+                address:address
 
-        }
+            });
 
 
-    });
+        }
 
 
+    });
 
 
-    let html = "";
 
+    let html = "";
 
-    html += "<h2>نتیجه جستجو</h2>";
 
+    html += "<h2>نتیجه جستجو</h2>";
 
-    html +=
-    "<p>تعداد مشتری : <b>"
-    + customers.length +
-    "</b></p>";
 
+    html +=
+    "<p>تعداد مشتری : <b>"
+    + customers.length +
+    "</b></p>";
 
 
 
 
-    customers.forEach(function(c,index){
+    customers.forEach(function(c,index){
 
 
+        html += `
 
-        html += `
 
-        <div class="card">
+        <div class="card">
 
 
-        <h3>
-        ${index+1} - ${c.name}
-        </h3>
+        <h3>
+        ${index+1} - ${c.name}
+        </h3>
 
 
-        <div class="info">
+        <div class="info">
 
-        📍 ${c.address}
+        📍 ${c.address}
 
-        </div>
+        </div>
 
 
 
-        <button class="action"
+        <button class="action"
 
-        onclick="openCustomer('${safe(c.name)}','${safe(c.address)}')">
+        onclick="openCustomer('${safe(c.name)}','${safe(c.address)}')">
 
 
-        مشاهده اطلاعات
+        مشاهده اطلاعات
 
 
-        </button>
+        </button>
 
 
-        </div>
+        </div>
 
 
-        `;
+        `;
 
 
-    });
+    });
 
 
 
-
-    document.getElementById("result").innerHTML =
-    html;
+    document.getElementById("result").innerHTML =
+    html;
 
 
 }
@@ -378,216 +342,230 @@ function showSearchList(){
 // نمایش اطلاعات مشتری
 // ======================================
 
-
 function openCustomer(name,address){
 
 
-    let history =
-    database.filter(function(item){
+    let history =
+    database.filter(function(item){
 
 
-        return item["مشتری"]===name &&
-        item["آدرس"]===address;
+        return item["مشتری"]===name &&
+        item["آدرس"]===address;
 
 
-    });
-
-
-
-
-    history.sort(function(a,b){
-
-
-        return Number(b["تاریخ"]) -
-        Number(a["تاریخ"]);
-
-
-    });
+    });
 
 
 
-
-    let last =
-    history[0];
+    history.sort(function(a,b){
 
 
-
-    let html = `
-
-
-    <div class="card">
+        return Number(b["تاریخ"]) -
+        Number(a["تاریخ"]);
 
 
-    <h2>${last["مشتری"]}</h2>
+    });
 
 
-    <div class="info">
-    📍 ${last["آدرس"]}
-    </div>
+
+    let last =
+    history[0];
 
 
-    <div class="info">
-    📅 آخرین سرویس:
-    ${last["ماه"]}
-    ${last["تاریخ"]}
-    </div>
+
+    let html = `
 
 
-    <div class="info">
-    🔢 تعداد سرویس:
-    ${history.length}
-    </div>
+    <div class="card">
 
 
-    <div class="info">
-    👷 پرسنل:
-    ${last["پرسنل"] || ""}
-    </div>
+    <h2>${last["مشتری"]}</h2>
 
 
-    <div class="info">
-    💰 مبلغ:
-    ${Number(last["مبلغ"]||0).toLocaleString()}
-    </div>
+    <div class="info">
+    📍 ${last["آدرس"]}
+    </div>
 
 
-    <div class="info">
-    📱 موبایل:
-    ${last["موبایل"] || ""}
-    </div>
+    <div class="info">
+    📅 آخرین سرویس:
+    ${last["ماه"]}
+    ${last["تاریخ"]}
+    </div>
 
 
-    <button class="action"
+    <div class="info">
+    🔢 تعداد سرویس:
+    ${history.length}
+    </div>
 
-    onclick="showHistory('${safe(name)}// ======================================
+
+    <div class="info">
+    👷 پرسنل:
+    ${last["پرسنل"] || ""}
+    </div>
+
+
+    <div class="info">
+    💰 مبلغ:
+    ${Number(last["مبلغ"]||0).toLocaleString()}
+    </div>
+
+
+    <div class="info">
+    📱 موبایل:
+    ${last["موبایل"] || ""}
+    </div>
+
+
+    <button class="action"
+
+    onclick="showHistory('${safe(name)}','${safe(address)}')">
+
+    نمایش سوابق
+
+    </button>
+
+
+    </div>
+
+
+    `;
+
+
+
+    document.getElementById("result").innerHTML =
+    html;
+
+
+}// ======================================
 // نمایش سوابق مشتری
 // ======================================
 
 function showHistory(name,address){
 
 
-    let history =
-    database.filter(function(item){
+    let history =
+    database.filter(function(item){
 
 
-        return item["مشتری"]===name &&
-        item["آدرس"]===address;
+        return item["مشتری"]===name &&
+        item["آدرس"]===address;
 
 
-    });
+    });
 
 
 
-    let html = `
+    let html = `
 
 
-    <div class="card">
+    <div class="card">
 
 
-    <h2>${name}</h2>
+    <h2>${name}</h2>
 
 
-    <div class="info">
-    📍 ${address}
-    </div>
+    <div class="info">
+    📍 ${address}
+    </div>
 
 
-    <div class="info">
-    🔢 تعداد کل سرویس ها:
-    ${history.length}
-    </div>
+    <div class="info">
+    🔢 تعداد کل سرویس ها:
+    ${history.length}
+    </div>
 
 
-    `;
+    `;
 
 
 
-    history.forEach(function(item,index){
+    history.forEach(function(item,index){
 
 
-        html += `
+        html += `
 
 
-        <div class="card">
+        <div class="card">
 
 
-        <h3>
-        سرویس ${index+1}
-        </h3>
+        <h3>
+        سرویس ${index+1}
+        </h3>
 
 
 
-        <div class="info">
-        📅 ${item["ماه"]}
-        ${item["تاریخ"]}
-        </div>
+        <div class="info">
+        📅 ${item["ماه"]}
+        ${item["تاریخ"]}
+        </div>
 
 
 
-        <div class="info">
-        👷 پرسنل:
-        ${item["پرسنل"] || ""}
-        </div>
+        <div class="info">
+        👷 پرسنل:
+        ${item["پرسنل"] || ""}
+        </div>
 
 
 
-        <div class="info">
-        🏢 نوع کار:
-        ${item["نوع کار"] || ""}
-        </div>
+        <div class="info">
+        🏢 نوع کار:
+        ${item["نوع کار"] || ""}
+        </div>
 
 
 
-        <div class="info">
-        💰 مبلغ:
-        ${Number(item["مبلغ"]||0).toLocaleString()}
-        </div>
+        <div class="info">
+        💰 مبلغ:
+        ${Number(item["مبلغ"]||0).toLocaleString()}
+        </div>
 
 
 
-        <div class="info">
-        📱 موبایل:
-        ${item["موبایل"] || ""}
-        </div>
+        <div class="info">
+        📱 موبایل:
+        ${item["موبایل"] || ""}
+        </div>
 
 
 
-        </div>
+        </div>
 
 
-        `;
+        `;
 
 
-    });
+    });
 
 
 
 
-    html += `
+    html += `
 
 
-    <button class="action"
+    <button class="action"
 
-    onclick="newSearch()">
+    onclick="newSearch()">
 
-    🔍 جستجوی جدید
+    🔍 جستجوی جدید
 
-    </button>
+    </button>
 
 
-    </div>
+    </div>
 
 
-    `;
+    `;
 
 
 
-    document.getElementById("result").innerHTML =
-    html;
+    document.getElementById("result").innerHTML =
+    html;
 
 
 }
-
 
 
 
@@ -598,55 +576,53 @@ function showHistory(name,address){
 // جستجوی جدید
 // ======================================
 
-
 function newSearch(){
 
 
-    let box =
-    document.getElementById("searchBox");
+    let box =
+    document.getElementById("searchBox");
 
 
-    if(box){
+    if(box){
 
-        box.value="";
+        box.value = "";
 
-        box.focus();
+        box.focus();
 
-    }
-
-
-
-    let result =
-    document.getElementById("result");
+    }
 
 
 
-    if(result){
+    let result =
+    document.getElementById("result");
 
 
-        result.innerHTML = `
+    if(result){
 
 
-        <div class="welcome">
+        result.innerHTML = `
 
 
-        <h2>
-        آماده جستجو
-        </h2>
+        <div class="welcome">
 
 
-        <p>
-        نام مشتری، آدرس یا شماره موبایل را وارد کنید.
-        </p>
+        <h2>
+        آماده جستجو
+        </h2>
 
 
-        </div>
+        <p>
+        نام مشتری، آدرس یا شماره موبایل را وارد کنید.
+        </p>
 
 
-        `;
+        </div>
 
 
-    }
+        `;
+
+
+    }
 
 
 }
@@ -659,19 +635,17 @@ function newSearch(){
 // تابع کمکی
 // ======================================
 
-
 function safe(value){
 
 
-    if(!value){
+    if(!value){
 
-        return "";
+        return "";
 
-    }
+    }
 
 
-    return value
-    .replace(/'/g,"\\'");
+    return value.replace(/'/g,"\\'");
 
 
 }// ======================================
@@ -681,102 +655,100 @@ function safe(value){
 function setupPhone(){
 
 
-    let display =
-    document.getElementById("dialNumber");
+    let display =
+    document.getElementById("dialNumber");
 
 
 
-    let keys =
-    document.querySelectorAll(".dialKey");
+    let keys =
+    document.querySelectorAll(".dialKey");
 
 
 
-    keys.forEach(function(key){
+    keys.forEach(function(key){
 
 
-        key.onclick = function(){
+        key.onclick = function(){
 
 
-            if(display){
+            if(display){
 
-                display.value += this.innerText;
+                display.value += this.innerText;
 
-            }
-
-
-        };
+            }
 
 
-    });
+        };
 
 
-
-
-
-    let clearBtn =
-    document.getElementById("clearBtn");
-
-
-
-    if(clearBtn){
-
-
-        clearBtn.onclick = function(){
-
-
-            if(display){
-
-                display.value = "";
-
-            }
-
-
-        };
-
-
-    }
+    });
 
 
 
 
 
-
-    let callBtn =
-    document.getElementById("callBtn");
-
+    let clearBtn =
+    document.getElementById("clearBtn");
 
 
-    if(callBtn){
+
+    if(clearBtn){
 
 
-        callBtn.onclick = function(){
+        clearBtn.onclick = function(){
 
 
-            if(display && display.value){
+            if(display){
+
+                display.value = "";
+
+            }
 
 
-                window.location.href =
-                "tel:" + display.value;
+        };
 
 
-            }
-            else{
+    }
 
 
-                alert("شماره را وارد کنید");
 
 
-            }
+
+    let callBtn =
+    document.getElementById("callBtn");
 
 
-        };
+
+    if(callBtn){
 
 
-    }
+        callBtn.onclick = function(){
+
+
+            if(display && display.value){
+
+
+                window.location.href =
+                "tel:" + display.value;
+
+
+            }
+            else{
+
+
+                alert("شماره را وارد کنید");
+
+
+            }
+
+
+        };
+
+
+    }
 
 
 }
-
 
 
 
@@ -787,90 +759,80 @@ function setupPhone(){
 // منوی پایین برنامه
 // ======================================
 
-
 function setupNavigation(){
 
 
 
-    let homeTab =
-    document.getElementById("homeTab");
+    let homeTab =
+    document.getElementById("homeTab");
 
 
-
-    let phoneTab =
-    document.getElementById("phoneTab");
-
+    let phoneTab =
+    document.getElementById("phoneTab");
 
 
-    let contactsTab =
-    document.getElementById("contactsTab");
+    let contactsTab =
+    document.getElementById("contactsTab");
 
 
-
-    let smsTab =
-    document.getElementById("smsTab");
+    let smsTab =
+    document.getElementById("smsTab");
 
 
 
 
 
-    if(homeTab){
+    if(homeTab){
 
+        homeTab.onclick=function(){
 
-        homeTab.onclick=function(){
+            showPage("homePage");
 
-            showPage("homePage");
+        };
 
-        };
-
-
-    }
-
-
-
-
-    if(phoneTab){
-
-
-        phoneTab.onclick=function(){
-
-            showPage("phonePage");
-
-        };
-
-
-    }
+    }
 
 
 
 
-    if(contactsTab){
+
+    if(phoneTab){
+
+        phoneTab.onclick=function(){
+
+            showPage("phonePage");
+
+        };
+
+    }
 
 
-        contactsTab.onclick=function(){
-
-            showPage("contactsPage");
-
-        };
-
-
-    }
 
 
 
+    if(contactsTab){
 
-    if(smsTab){
+        contactsTab.onclick=function(){
+
+            showPage("contactsPage");
+
+        };
+
+    }
 
 
-        smsTab.onclick=function(){
-
-            showPage("smsPage");
-
-        };
 
 
-    }
 
+    if(smsTab){
+
+        smsTab.onclick=function(){
+
+            showPage("smsPage");
+
+        };
+
+    }
 
 
 }
@@ -885,67 +847,65 @@ function showPage(pageId){
 
 
 
-    let pages =
-    document.querySelectorAll(".page");
+    let pages =
+    document.querySelectorAll(".page");
 
 
 
-    pages.forEach(function(page){
+    pages.forEach(function(page){
 
 
-        page.classList.add("hidden");
+        page.classList.add("hidden");
 
 
-    });
-
-
-
-
-    let page =
-    document.getElementById(pageId);
+    });
 
 
 
-    if(page){
+
+    let page =
+    document.getElementById(pageId);
 
 
-        page.classList.remove("hidden");
 
+    if(page){
 
-    }
+        page.classList.remove("hidden");
+
+    }
 
 
 }// ======================================
-// کنترل خالی شدن جستجو
+// کنترل جستجو هنگام پاک شدن متن
 // ======================================
 
 document.addEventListener("DOMContentLoaded",function(){
 
 
-    let searchBox =
-    document.getElementById("searchBox");
+    let searchBox =
+    document.getElementById("searchBox");
 
 
 
-    if(searchBox){
+    if(searchBox){
 
 
-        searchBox.addEventListener("input",function(){
+        searchBox.addEventListener("input",function(){
 
 
-            if(this.value.trim()===""){
+            if(this.value.trim()===""){
 
 
-                newSearch();
+                newSearch();
 
 
-            }
+            }
 
 
-        });
+        });
 
 
-    }
+    }
 
 
 });
@@ -961,3 +921,4 @@ document.addEventListener("DOMContentLoaded",function(){
 console.log("Customer Manager v1.2 Loaded");
 
 console.log("Ready...");
+

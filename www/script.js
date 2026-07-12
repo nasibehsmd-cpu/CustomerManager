@@ -1,5 +1,5 @@
 // ======================================
-// Customer Manager v1.1
+// Customer Manager v1.2
 // شرکت انتخاب نیک
 // ======================================
 
@@ -32,57 +32,39 @@ window.onload = function(){
     loadData();
 
 
-    const searchBtn = document.getElementById("searchBtn");
+    let searchBtn =
+    document.getElementById("searchBtn");
+
 
     if(searchBtn){
 
-        searchBtn.addEventListener(
-            "click",
-            searchCustomer
-        );
+        searchBtn.onclick = searchCustomer;
 
     }
 
 
 
-    const searchBox = document.getElementById("searchBox");
+    let searchBox =
+    document.getElementById("searchBox");
 
 
     if(searchBox){
 
-        searchBox.addEventListener(
-            "keydown",
-            function(e){
+        searchBox.addEventListener("keydown",function(e){
 
-                if(e.key==="Enter"){
+            if(e.key==="Enter"){
 
-                    searchCustomer();
-
-                }
+                searchCustomer();
 
             }
-        );
 
-
-        searchBox.addEventListener(
-            "input",
-            function(){
-
-                if(this.value.trim()===""){
-
-                    newSearch();
-
-                }
-
-            }
-        );
+        });
 
     }
 
 
 
     setupPhone();
-
 
     setupNavigation();
 
@@ -92,84 +74,117 @@ window.onload = function(){
 
 
 
+
 // ======================================
-// خواندن اطلاعات مشتری ها
+// دریافت اطلاعات مشتریان
 // ======================================
 
 
 async function loadData(){
 
+
     try{
 
 
-        let response = await fetch("data.json");
+        let response =
+        await fetch("data.json");
 
 
-        database = await response.json();
+        database =
+        await response.json();
 
 
 
         database.sort(function(a,b){
 
 
-            let ma = monthOrder[a["ماه"]] || 0;
-
-            let mb = monthOrder[b["ماه"]] || 0;
-
+            let ma =
+            monthOrder[a["ماه"]] || 0;
 
 
-            if(ma!==mb){
+            let mb =
+            monthOrder[b["ماه"]] || 0;
 
-                return mb-ma;
+
+
+            if(ma !== mb){
+
+                return mb - ma;
 
             }
 
 
-
-            return Number(b["تاریخ"])-Number(a["تاریخ"]);
-
+            return Number(b["تاریخ"]) -
+            Number(a["تاریخ"]);
 
 
         });
 
 
 
-        let result = document.getElementById("result");
+        let result =
+        document.getElementById("result");
+
 
 
         if(result){
+
 
             result.innerHTML = `
 
             <div class="welcome">
 
-            <h2>اطلاعات آماده است</h2>
+            <h2>
+            اطلاعات آماده است
+            </h2>
 
             <p>
-            ${database.length} رکورد بارگذاری شد.
+            ${database.length}
+            رکورد بارگذاری شد.
             </p>
 
             </div>
 
             `;
 
+
+        }
+
+
+
+    }
+    catch(error){
+
+
+        console.log(error);
+
+
+        let result =
+        document.getElementById("result");
+
+
+        if(result){
+
+
+            result.innerHTML =
+            "<h2 style='color:red'>خطا در خواندن اطلاعات</h2>";
+
+
         }
 
 
     }
-    catch(err){
 
 
-        console.log(err);
-// ======================================
+}// ======================================
 // جستجوی مشتری
 // ======================================
 
 function searchCustomer(){
 
 
-    let text = document
-    .getElementById("searchBox")
+    let text =
+    document.getElementById("searchBox")
     .value
     .trim()
     .toLowerCase();
@@ -188,13 +203,18 @@ function searchCustomer(){
 
 
 
-    searchResult = database.filter(function(item){
+    searchResult =
+    database.filter(function(item){
 
 
-        return item["جستجو"]
+        let search =
+        (item["جستجو"] || "")
         .toString()
-        .toLowerCase()
-        .includes(text);
+        .toLowerCase();
+
+
+
+        return search.includes(text);
 
 
 
@@ -207,12 +227,13 @@ function searchCustomer(){
     if(searchResult.length===0){
 
 
-        document.getElementById("result").innerHTML=
+        document.getElementById("result").innerHTML =
 
         "<h2>❌ مشتری پیدا نشد</h2>";
 
 
         return;
+
 
     }
 
@@ -221,15 +242,16 @@ function searchCustomer(){
     showSearchList();
 
 
-
 }
 
 
 
 
 
+
+
 // ======================================
-// نمایش لیست مشتری ها
+// نمایش نتیجه جستجو
 // ======================================
 
 
@@ -245,22 +267,24 @@ function showSearchList(){
     searchResult.forEach(function(item){
 
 
-
-        let name = (item["مشتری"] || "").trim();
-
-        let address = (item["آدرس"] || "").trim();
+        let name =
+        (item["مشتری"] || "").trim();
 
 
+        let address =
+        (item["آدرس"] || "").trim();
 
-        let key = name+"|"+address;
+
+
+        let key =
+        name + "|" + address;
 
 
 
         if(!unique[key]){
 
 
-            unique[key]=true;
-
+            unique[key] = true;
 
 
             customers.push({
@@ -275,22 +299,20 @@ function showSearchList(){
         }
 
 
-
     });
 
 
 
 
-    let html="";
-
+    let html = "";
 
 
     html += "<h2>نتیجه جستجو</h2>";
 
 
-
-    html += "<p>تعداد مشتری : <b>"+
-    customers.length+
+    html +=
+    "<p>تعداد مشتری : <b>"
+    + customers.length +
     "</b></p>";
 
 
@@ -303,7 +325,6 @@ function showSearchList(){
 
         html += `
 
-
         <div class="card">
 
 
@@ -314,15 +335,55 @@ function showSearchList(){
 
         <div class="info">
 
-        📍 ${
+        📍 ${c.address}
+
+        </div>
+
+
+
+        <button class="action"
+
+        onclick="openCustomer('${safe(c.name)}','${safe(c.address)}')">
+
+
+        مشاهده اطلاعات
+
+
+        </button>
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+
+    document.getElementById("result").innerHTML =
+    html;
+
+
+}
+
+
+
+
+
+
 // ======================================
-// نمایش سوابق مشتری
+// نمایش اطلاعات مشتری
 // ======================================
 
-function showHistory(name,address){
+
+function openCustomer(name,address){
 
 
-    let history = database.filter(function(item){
+    let history =
+    database.filter(function(item){
 
 
         return item["مشتری"]===name &&
@@ -333,24 +394,84 @@ function showHistory(name,address){
 
 
 
+
     history.sort(function(a,b){
-
-
-        let ma = monthOrder[a["ماه"]] || 0;
-
-        let mb = monthOrder[b["ماه"]] || 0;
-
-
-
-        if(ma!==mb){
-
-            return mb-ma;
-
-        }
 
 
         return Number(b["تاریخ"]) -
         Number(a["تاریخ"]);
+
+
+    });
+
+
+
+
+    let last =
+    history[0];
+
+
+
+    let html = `
+
+
+    <div class="card">
+
+
+    <h2>${last["مشتری"]}</h2>
+
+
+    <div class="info">
+    📍 ${last["آدرس"]}
+    </div>
+
+
+    <div class="info">
+    📅 آخرین سرویس:
+    ${last["ماه"]}
+    ${last["تاریخ"]}
+    </div>
+
+
+    <div class="info">
+    🔢 تعداد سرویس:
+    ${history.length}
+    </div>
+
+
+    <div class="info">
+    👷 پرسنل:
+    ${last["پرسنل"] || ""}
+    </div>
+
+
+    <div class="info">
+    💰 مبلغ:
+    ${Number(last["مبلغ"]||0).toLocaleString()}
+    </div>
+
+
+    <div class="info">
+    📱 موبایل:
+    ${last["موبایل"] || ""}
+    </div>
+
+
+    <button class="action"
+
+    onclick="showHistory('${safe(name)}// ======================================
+// نمایش سوابق مشتری
+// ======================================
+
+function showHistory(name,address){
+
+
+    let history =
+    database.filter(function(item){
+
+
+        return item["مشتری"]===name &&
+        item["آدرس"]===address;
 
 
     });
@@ -372,7 +493,7 @@ function showHistory(name,address){
 
 
     <div class="info">
-    🔢 تعداد کل سرویس ها :
+    🔢 تعداد کل سرویس ها:
     ${history.length}
     </div>
 
@@ -382,7 +503,6 @@ function showHistory(name,address){
 
 
     history.forEach(function(item,index){
-
 
 
         html += `
@@ -405,29 +525,29 @@ function showHistory(name,address){
 
 
         <div class="info">
-        👷 پرسنل :
-        ${item["پرسنل"]}
+        👷 پرسنل:
+        ${item["پرسنل"] || ""}
         </div>
 
 
 
         <div class="info">
-        🏢 نوع کار :
-        ${item["نوع کار"]}
+        🏢 نوع کار:
+        ${item["نوع کار"] || ""}
         </div>
 
 
 
         <div class="info">
-        💰 مبلغ :
+        💰 مبلغ:
         ${Number(item["مبلغ"]||0).toLocaleString()}
         </div>
 
 
 
         <div class="info">
-        📱 موبایل :
-        ${item["موبایل"]}
+        📱 موبایل:
+        ${item["موبایل"] || ""}
         </div>
 
 
@@ -436,7 +556,6 @@ function showHistory(name,address){
 
 
         `;
-
 
 
     });
@@ -449,84 +568,170 @@ function showHistory(name,address){
 
     <button class="action"
 
-    onclick="openCustomer('${escapeText(name)}','${escapeText(address)}')">
+    onclick="newSearch()">
 
-
-    ⬅ بازگشت
-
+    🔍 جستجوی جدید
 
     </button>
 
 
-
-    <button class="action"
-
-    onclick="newSearch()">
+    </div>
 
 
-    🔍 جستجوی جدید
+    `;
 
 
-    </
+
+    document.getElementById("result").innerHTML =
+    html;
+
+
+}
+
+
+
+
+
+
+
 // ======================================
+// جستجوی جدید
+// ======================================
+
+
+function newSearch(){
+
+
+    let box =
+    document.getElementById("searchBox");
+
+
+    if(box){
+
+        box.value="";
+
+        box.focus();
+
+    }
+
+
+
+    let result =
+    document.getElementById("result");
+
+
+
+    if(result){
+
+
+        result.innerHTML = `
+
+
+        <div class="welcome">
+
+
+        <h2>
+        آماده جستجو
+        </h2>
+
+
+        <p>
+        نام مشتری، آدرس یا شماره موبایل را وارد کنید.
+        </p>
+
+
+        </div>
+
+
+        `;
+
+
+    }
+
+
+}
+
+
+
+
+
+// ======================================
+// تابع کمکی
+// ======================================
+
+
+function safe(value){
+
+
+    if(!value){
+
+        return "";
+
+    }
+
+
+    return value
+    .replace(/'/g,"\\'");
+
+
+}// ======================================
 // شماره گیر تلفن
 // ======================================
 
 function setupPhone(){
 
 
-    let keys = document.querySelectorAll(".dialKey");
-
-
-    let display = document.getElementById("dialNumber");
+    let display =
+    document.getElementById("dialNumber");
 
 
 
-    if(display){
+    let keys =
+    document.querySelectorAll(".dialKey");
 
 
-        keys.forEach(function(key){
+
+    keys.forEach(function(key){
 
 
-            key.addEventListener("click",function(){
+        key.onclick = function(){
 
+
+            if(display){
 
                 display.value += this.innerText;
 
-
-            });
-
+            }
 
 
-        });
+        };
 
 
-
-    }
+    });
 
 
 
 
-    let clearBtn = document.getElementById("clearBtn");
+
+    let clearBtn =
+    document.getElementById("clearBtn");
 
 
 
     if(clearBtn){
 
 
-
-        clearBtn.addEventListener("click",function(){
+        clearBtn.onclick = function(){
 
 
             if(display){
 
-                display.value="";
+                display.value = "";
 
             }
 
 
-        });
-
+        };
 
 
     }
@@ -534,15 +739,17 @@ function setupPhone(){
 
 
 
-    let callBtn = document.getElementById("callBtn");
+
+
+    let callBtn =
+    document.getElementById("callBtn");
 
 
 
     if(callBtn){
 
 
-
-        callBtn.addEventListener("click",function(){
+        callBtn.onclick = function(){
 
 
             if(display && display.value){
@@ -552,20 +759,17 @@ function setupPhone(){
                 "tel:" + display.value;
 
 
-
             }
             else{
 
 
-                alert("شماره را وارد کنید.");
+                alert("شماره را وارد کنید");
 
 
             }
 
 
-
-        });
-
+        };
 
 
     }
@@ -577,30 +781,33 @@ function setupPhone(){
 
 
 
+
+
 // ======================================
-// جابه جایی صفحات
+// منوی پایین برنامه
 // ======================================
+
 
 function setupNavigation(){
 
 
 
-    const homeTab =
+    let homeTab =
     document.getElementById("homeTab");
 
 
 
-    const phoneTab =
+    let phoneTab =
     document.getElementById("phoneTab");
 
 
 
-    const contactsTab =
+    let contactsTab =
     document.getElementById("contactsTab");
 
 
 
-    const smsTab =
+    let smsTab =
     document.getElementById("smsTab");
 
 
@@ -609,19 +816,21 @@ function setupNavigation(){
 
     if(homeTab){
 
+
         homeTab.onclick=function(){
 
             showPage("homePage");
 
         };
 
+
     }
 
 
 
 
-
     if(phoneTab){
+
 
         phoneTab.onclick=function(){
 
@@ -629,13 +838,14 @@ function setupNavigation(){
 
         };
 
+
     }
 
 
 
 
-
     if(contactsTab){
+
 
         contactsTab.onclick=function(){
 
@@ -643,19 +853,21 @@ function setupNavigation(){
 
         };
 
-    }
 
+    }
 
 
 
 
     if(smsTab){
 
+
         smsTab.onclick=function(){
 
             showPage("smsPage");
 
         };
+
 
     }
 
@@ -668,7 +880,8 @@ function setupNavigation(){
 
 
 
-function showPage(id){
+
+function showPage(pageId){
 
 
 
@@ -688,28 +901,23 @@ function showPage(id){
 
 
 
-    let target =
-    document.getElementById(id);
+    let page =
+    document.getElementById(pageId);
 
 
 
-    if(target){
+    if(page){
 
 
-        target.classList.remove("hidden");
+        page.classList.remove("hidden");
 
 
     }
 
 
-
-}
+}// ======================================
+// کنترل خالی شدن جستجو
 // ======================================
-// آماده سازی اولیه
-// ======================================
-
-
-// جلوگیری از خطا در صورت نبودن المنت ها
 
 document.addEventListener("DOMContentLoaded",function(){
 
@@ -728,37 +936,7 @@ document.addEventListener("DOMContentLoaded",function(){
             if(this.value.trim()===""){
 
 
-                let result =
-                document.getElementById("result");
-
-
-
-                if(result){
-
-
-                    result.innerHTML = `
-
-
-                    <div class="welcome">
-
-
-                    <h2>
-                    آماده جستجو
-                    </h2>
-
-
-                    <p>
-                    نام مشتری، آدرس یا شماره موبایل را وارد کنید.
-                    </p>
-
-
-                    </div>
-
-
-                    `;
-
-
-                }
+                newSearch();
 
 
             }
@@ -767,12 +945,11 @@ document.addEventListener("DOMContentLoaded",function(){
         });
 
 
-
     }
 
 
-
 });
+
 
 
 
@@ -781,24 +958,6 @@ document.addEventListener("DOMContentLoaded",function(){
 // نسخه برنامه
 // ======================================
 
-console.log("CustomerManager v1.1 Loaded");
+console.log("Customer Manager v1.2 Loaded");
 
 console.log("Ready...");
-
-
-
-        let result = document.getElementById("result");
-
-
-        if(result){
-
-            result.innerHTML =
-
-            "<h2 style='color:red'>خطا در خواندن data.json</h2>";
-
-        }
-
-
-    }
-
-}

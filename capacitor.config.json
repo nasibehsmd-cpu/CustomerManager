@@ -1,0 +1,16 @@
+{
+  "appId": "com.entekhabnik.customermanager",
+  "appName": "CustomerManager",
+  "webDir": "www"
+}
+}
+cat > capacitor.config.json << 'EOF'
+{
+  "appId": "com.entekhabnik.customermanager",
+  "appName": "CustomerManager",
+  "webDir": "www"
+}
+EOF
+mkdir -p www
+npx cap copy android
+
